@@ -1,6 +1,6 @@
+#Windows makefile
 
-
-CC = gcc
+CC = mingw32-gcc
 
 ###
 ###  CFLAGS
@@ -8,7 +8,7 @@ CC = gcc
 
 CFLAGS  = -std=c99
 
-CFLAGS += -ID:/_libs/opencv/include
+CFLAGS += -ID:/_libs/opencv/build/include
 
 
 ###
@@ -17,7 +17,7 @@ CFLAGS += -ID:/_libs/opencv/include
 
 LIBS  = -LD:/_libs/opencv/build/x86/mingw/lib
 LIBS += -lm
-LIBS += -lopencv_core -lopencv_imgproc -lopencv_highgui
+LIBS += -lopencv_core243 -lopencv_imgproc243 -lopencv_highgui243
 #LIBS += -lcv -lhighgui
 
 ###
@@ -26,12 +26,12 @@ LIBS += -lopencv_core -lopencv_imgproc -lopencv_highgui
 
 SRCDIR = src
 BLDDIR = bld
-MKBLDDIR = @mkdir -p $(BLDDIR)
-BIN  = OSD-Tester
-ALLTARGETS = OSD-Tester
+#MKBLDDIR = @mkdir $(BLDDIR)
+BIN  = Hershey.exe
+ALLTARGETS = Hershey-Imp
 
 SRC_FILES  = main.c
-SRC_FILES += output.c
+SRC_FILES += Output.c
 SRC_FILES += Graphics.c
 
 
@@ -50,7 +50,7 @@ $(BLDDIR)/%.o: $(SRCDIR)/%.c
 	$(MKBLDDIR)
 	$(QUIET_CC)$(CC) $(CFLAGS) -c $< -o $@
 
-OSD-Tester: $(OBJ)
+Hershey-Imp: $(OBJ)
 	$(QUIET_LINK)$(CC) $(LDOPTS) -o $(BIN) $(OBJ) $(LIBS)
 
 # do not move the following line:
