@@ -12,12 +12,13 @@
 
 void initialiseGraphics() {
     //Do font init here
+    //For future use
 }
 
 void drawLine(int x, int y, int thickness, int angle, int length, int8_t grid[][yres]){
     //Calculate end points according to the angle and length. (Right angled triangle)
     //
-    if(x<0 || y <0 || x > xres || y > yres)
+    if(x<0 || y <0 || x > xres-1 || y > yres-1)
       return;
 
     float A = 0.0;
@@ -27,7 +28,7 @@ void drawLine(int x, int y, int thickness, int angle, int length, int8_t grid[][
     float AC = 180.0-AB-angle;
     float BC = angle;
 
-    calcTriangleSides(&A,&B,&C,&AB,&AC,&BC);
+    calcTriangleSides_float(&A,&B,&C,&AB,&AC,&BC);
 
     plotLine(x,y,x+round_int(B),y-round_int(A),grid);
 
@@ -96,7 +97,7 @@ void drawCharacter(int cenX, int cenY, int size, int rotation, int character, in
         }
 
         //If necessary rotate the vertex points around the characters center point
-        if(rotation != 0 || rotation ==0) {
+        if(rotation != 0) {
 
             //First calculate the angle and distance of the first vertex coordinate from the center
 
@@ -107,7 +108,7 @@ void drawCharacter(int cenX, int cenY, int size, int rotation, int character, in
             float AC = 0.0;
             float BC = 0.0;
 
-            calcTriangleAngle(&A,&B,&C,&AB,&AC,&BC);
+            calcTriangleAngle_float(&A,&B,&C,&AB,&AC,&BC);
 
             float length  = C*sizeMX; //Set the length and scale it according to font size
             float angle   = BC+rotation;
@@ -121,7 +122,7 @@ void drawCharacter(int cenX, int cenY, int size, int rotation, int character, in
             AC = 180.0-AB-angle;
             BC = angle;
 
-            calcTriangleSides(&A,&B,&C,&AB,&AC,&BC);
+            calcTriangleSides_float(&A,&B,&C,&AB,&AC,&BC);
 
             penXR = round_int(A);
             penYR = round_int(B);
@@ -135,7 +136,7 @@ void drawCharacter(int cenX, int cenY, int size, int rotation, int character, in
             AC = 0.0;
             BC = 0.0;
 
-            calcTriangleAngle(&A,&B,&C,&AB,&AC,&BC);
+            calcTriangleAngle_float(&A,&B,&C,&AB,&AC,&BC);
 
             length  = C*sizeMX;  //Set the length and scale it according to font size
             angle   = BC+rotation;
@@ -149,7 +150,7 @@ void drawCharacter(int cenX, int cenY, int size, int rotation, int character, in
             AC = 180.0-AB-angle;
             BC = angle;
 
-            calcTriangleSides(&A,&B,&C,&AB,&AC,&BC);
+            calcTriangleSides_float(&A,&B,&C,&AB,&AC,&BC);
 
             nextXR = round_int(A);
             nextYR = round_int(B);
@@ -157,7 +158,7 @@ void drawCharacter(int cenX, int cenY, int size, int rotation, int character, in
         }
 
         //Draw the vertex
-        if(rotation != 0 || rotation ==0)
+        if(rotation != 0)
           plotLine(cenX+penXR,cenY-penYR,cenX+nextXR,cenY-nextYR,grid);
         else
           plotLine(cenX+(float)penX*sizeMX,cenY-(float)penY*sizeMX,cenX+(float)nextX*sizeMX,cenY-(float)nextY*sizeMX,grid);
@@ -175,7 +176,7 @@ void drawCharacter(int cenX, int cenY, int size, int rotation, int character, in
 
 void drawString(int posX, int posY, int size, int rotation, char text[], int length, int8_t grid[][yres]) {
 
-    if(posX<0 || posY <0 || posX > xres || posY > yres)
+    if(posX<0 || posY <0 || posX > xres-1 || posY > yres-1)
       return;
 
     int previousCharWidth = -1;
@@ -218,7 +219,7 @@ void drawString(int posX, int posY, int size, int rotation, char text[], int len
             float AC = 180-AB-rotation;
             float BC = rotation;
 
-            calcTriangleSides(&A,&B,&C,&AB,&AC,&BC);
+            calcTriangleSides_float(&A,&B,&C,&AB,&AC,&BC);
 
             posX += A;
             posY += B;
@@ -246,6 +247,7 @@ void plotLine(int x0, int y0, int x1, int y1,int8_t grid[][yres]) {
    }
 }
 
+//Plots a circle
 void plotCircle(int xm, int ym, int r,int8_t grid[][yres]) {
 
    int x = -r, y = 0, err = 2-2*r; /* II. Quadrant */
@@ -260,16 +262,18 @@ void plotCircle(int xm, int ym, int r,int8_t grid[][yres]) {
    } while (x < 0);
 }
 
+//Sets the pixel value for a given x & y coordinate
 void setPixel(int8_t grid[][yres], int x, int y) {
 
-    //if(x<0 || y <0 || x > xres || y > yres)
+    if(x<0 || y <0 || x > xres-1 || y > yres-1)
+        return;
 
     //TODO: set pixel colour
     grid[x][y]=1;
 }
 
 //Calculate two sides of a right angled traingle given one length and one angle
-void calcTriangleSides(float * A, float * B, float * C, float * AB, float * AC, float * BC) {
+void calcTriangleSides_float(float * A, float * B, float * C, float * AB, float * AC, float * BC) {
     //A = overstaand, B = aanliggende, C = schuine
 
     // Sin(BC) = A / C
@@ -285,8 +289,21 @@ void calcTriangleSides(float * A, float * B, float * C, float * AB, float * AC, 
     //http://wetenschap.infonu.nl/wiskunde/84556-de-lengte-van-een-zijde-van-een-driehoek-berekenen.html
 }
 
-void calcTriangleAngle(float * A, float * B, float * C, float * AB, float * AC, float * BC) {
-    //TODO: merge this function with calcTriangleSides
+//Calculate two sides of a right angled traingle given one length and one angle
+void calcTriangleSides_int(int * A, int * B, int * C, int * AB, int * AC, int * BC) {
+    //A = overstaand, B = aanliggende, C = schuine
+
+    // Sin(BC) = A / C
+    float sinBC = sinf((float)*BC*PI/180);
+    *A = *C * sinBC;
+
+    // Cos(BC) = B / C
+    float cosBC = cosf((float)*BC*PI/180);
+    *B = *C * cosBC;
+}
+
+void calcTriangleAngle_float(float * A, float * B, float * C, float * AB, float * AC, float * BC) {
+    //TODO: merge this function with calcTriangleSides_float
 
     //First calculate the angle of BC
 

@@ -23,46 +23,46 @@ int main() {
     outputInitialise(1);
 
     //Draw characters of different sizes
-    int fontSize = 20;
-    int angle = -22;
+    int fontSize = 10;
+    int angle = 10;
 
-    drawCharacter(xres/5,yres/4,fontSize,0,65,displayGrid);
-    drawCharacter(xres/5*2,yres/4,fontSize,0,66,displayGrid);
-    drawCharacter(xres/5*3,yres/4,fontSize,0,109,displayGrid);
-    drawCharacter(xres/5*4,yres/4,fontSize,0,83,displayGrid);
-
-    drawCharacter(xres/5,yres/2,fontSize,angle,65,displayGrid);
-    drawCharacter(xres/5*2,yres/2,fontSize,angle,66,displayGrid);
-    drawCharacter(xres/5*3,yres/2,fontSize,angle,109,displayGrid);
-    drawCharacter(xres/5*4,yres/2,fontSize,angle,83,displayGrid);
-
-    drawCharacter(xres/5,yres/4*3,fontSize,-45,65,displayGrid);
-    drawCharacter(xres/5*2,yres/4*3,fontSize,-45,66,displayGrid);
-    drawCharacter(xres/5*3,yres/4*3,fontSize,-45,109,displayGrid);
-    drawCharacter(xres/5*4,yres/4*3,fontSize,-45,83,displayGrid);
-
-    plotLine(0, yres/2, xres-1, yres/2,displayGrid);
-    plotLine(xres/2, 0, xres/2, yres-1,displayGrid);
-
-    // int length = 8;
-    // int rotation = 45;
-    // int size = 1; int Y=30;
-    // char buffer[length+1];
-    // snprintf (buffer,length+1,"ABCDEFGH");
+    // drawCharacter(xres/5,yres/4,fontSize,0,65,displayGrid);
+    // drawCharacter(xres/5*2,yres/4,fontSize,0,66,displayGrid);
+    // drawCharacter(xres/5*3,yres/4,fontSize,0,109,displayGrid);
+    // drawCharacter(xres/5*4,yres/4,fontSize,0,83,displayGrid);
     //
-    // for(int i=0;i<6;i++) {
+    // drawCharacter(xres/5,yres/2,fontSize,angle,65,displayGrid);
+    // drawCharacter(xres/5*2,yres/2,fontSize,angle,66,displayGrid);
+    // drawCharacter(xres/5*3,yres/2,fontSize,angle,109,displayGrid);
+    // drawCharacter(xres/5*4,yres/2,fontSize,angle,83,displayGrid);
     //
-    //   drawString(xres/4,Y,size,rotation,buffer,length,displayGrid);
+    // drawCharacter(xres/5,yres/4*3,fontSize,-45,65,displayGrid);
+    // drawCharacter(xres/5*2,yres/4*3,fontSize,-45,66,displayGrid);
+    // drawCharacter(xres/5*3,yres/4*3,fontSize,-45,109,displayGrid);
+    // drawCharacter(xres/5*4,yres/4*3,fontSize,-45,83,displayGrid);
+    //
+    // plotLine(0, yres/2, xres-1, yres/2,displayGrid);
+    // plotLine(xres/2, 0, xres/2, yres-1,displayGrid);
+
+    int length = 8;
+    int rotation = -90;
+    int size = 5;
+    char buffer[length+1];
+    snprintf (buffer,length+1,"ABCDEFGH");
+
+    // for(int i=0;i<5;i++) {
+    //
+    //   drawString(xres/2,yres/2,size,rotation,buffer,length,displayGrid);
     //
     //   size++;
-    //   Y+=30;
+    //   rotation +=45;
     // }
 
-    //drawString(xres/4,yres/2,fontSize,rotation,buffer,length,displayGrid);
+    drawString(xres/2,yres/2,fontSize,angle,buffer,length,displayGrid);
 
 
 
-    //Display OSD to display device
+    //Display grid to display device
     outputGridToDisplay(displayGrid);
 
     //Cleanup

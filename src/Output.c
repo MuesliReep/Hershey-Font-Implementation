@@ -44,7 +44,7 @@ int outputDestroy() {
         case 0:
         break;
         case 1:
-        	cvDestroyWindow( "OSD" );
+        	cvDestroyWindow( "Hershey Font" );
         break;
         default:
         	return -1;
